@@ -86,7 +86,10 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
     setExtracting(true)
 
     try {
-      const parsed = await exifr.parse(file, { gps: true, pick: ['DateTimeOriginal'] })
+      const parsed = await exifr.parse(file, {
+        gps: true,
+        pick: ['DateTimeOriginal', 'GPSLatitude', 'GPSLongitude', 'GPSLatitudeRef', 'GPSLongitudeRef'],
+      })
       if (parsed?.latitude != null && parsed?.longitude != null) {
         setLat(parsed.latitude)
         setLng(parsed.longitude)
