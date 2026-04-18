@@ -54,7 +54,7 @@ export default function BottomSheet({ open, onClose, children }: BottomSheetProp
           <div className="w-10 h-1 rounded-full bg-gs-border dark:bg-gs-border-dark" />
         </div>
         {/* Scrollable content */}
-        <div ref={contentRef} className="overflow-y-auto max-h-[72vh]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div ref={contentRef} className="overflow-y-auto max-h-[72vh]">
           {children}
         </div>
       </div>

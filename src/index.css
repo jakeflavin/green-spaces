@@ -22,7 +22,6 @@ body {
   background-color: #4a6358;
   font-family: 'Plus Jakarta Sans', sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
-  min-height: -webkit-fill-available;
   height: 100%;
   overflow: hidden;
 }
