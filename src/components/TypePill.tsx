@@ -13,7 +13,7 @@ export function TypePill({ type, size, active = false, onClick }: TypePillProps)
 
   if (size === 'sm') {
     return (
-      <span className={`${bgClass} ${textClass} inline-flex items-center gap-1 font-body font-semibold text-[10px] px-2 py-0.5 rounded-full`}>
+      <span className={`${bgClass} ${textClass} inline-flex items-center gap-1 font-body font-semibold text-[10px] px-2 py-1 rounded-full`}>
         <span aria-hidden="true">{emoji}</span>
         <span>{label}</span>
       </span>

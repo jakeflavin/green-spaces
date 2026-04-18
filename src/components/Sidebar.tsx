@@ -136,11 +136,12 @@ export default function Sidebar({
 
       {/* Footer — credit text (hidden when collapsed) + collapse button (always visible) */}
       <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
+      <div className="my-1">
       <div className="w-72 flex-shrink-0 flex items-center pl-3.5 pr-12 py-3">
         <p className={`font-body text-xs text-gs-muted dark:text-gs-muted-dark transition-opacity duration-200 ${
           collapsed ? 'opacity-0' : 'opacity-100'
         }`}>
-          made with ❤️ by jake flavin
+          made with ❤ by jake flavin
         </p>
       </div>
       {/* Button pinned to bottom-right of the aside — stays within w-12 when collapsed */}
@@ -166,6 +167,7 @@ export default function Sidebar({
           <polyline points="9 18 15 12 9 6" />
         </svg>
       </button>
+      </div>
     </aside>
   )
 }

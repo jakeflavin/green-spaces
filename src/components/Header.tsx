@@ -7,7 +7,7 @@ export default function Header({ memoryCount, onAddMemory }: HeaderProps) {
   return (
     <header className="flex items-center justify-between px-5 py-3 bg-gs-deep dark:bg-gs-night flex-shrink-0 shadow-header dark:shadow-[0_2px_16px_rgba(0,0,0,0.45)] z-10 relative">
       <div className="flex items-center gap-2.5">
-        <div className="w-8 h-8 bg-white/[0.18] dark:bg-gs-soft-dark rounded-lg flex items-center justify-center text-base flex-shrink-0">
+        <div className="w-10 h-10 bg-white/90 dark:bg-gs-soft-dark rounded-md flex items-center justify-center text-base flex-shrink-0">
           🌿
         </div>
         <div className="hidden sm:flex flex-col">
