@@ -13,6 +13,7 @@ import Drawer from './components/Drawer'
 import MemoryCard from './components/MemoryCard'
 import AddMemoryPanel from './components/AddMemoryPanel'
 import IntroModal from './components/IntroModal'
+import { useAppHeight } from './hooks/useAppHeight'
 
 type FilterValue = 'all' | MemoryType
 
@@ -20,6 +21,7 @@ const FILTER_ORDER: FilterValue[] = ['all', 'trail', 'summit', 'park', 'beach', 
 
 export default function App() {
   const { isDark } = useSystemTheme()
+  useAppHeight()
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem('gs-intro-seen'))
   const [isAddingMemory, setIsAddingMemory] = useState(false)
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
@@ -80,7 +82,10 @@ export default function App() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden">
+    <div
+      className="fixed inset-x-0 top-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden"
+      style={{ height: 'var(--app-height, 100dvh)' }}
+    >
       <Header onAddMemory={handleAddMemory} />
 
       {/* Main content row: sidebar + map + right drawer */}
