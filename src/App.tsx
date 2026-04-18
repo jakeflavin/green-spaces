@@ -1,10 +1,11 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useMemories } from './hooks/useMemories'
 import { useSystemTheme } from './hooks/useSystemTheme'
-import type { Memory, MemoryType } from './lib/memories'
+import type { Memory, MemoryType, MapBounds } from './lib/memories'
 import { TypePill } from './components/TypePill'
 import Header from './components/Header'
-import MapView, { type LatLngBounds } from './components/MapView'
+import MapView from './components/MapView'
+import type { LatLngBounds } from 'leaflet'
 import Sidebar from './components/Sidebar'
 import BottomSheet from './components/BottomSheet'
 import Drawer from './components/Drawer'
@@ -16,25 +17,29 @@ type FilterValue = 'all' | MemoryType
 const FILTER_ORDER: FilterValue[] = ['all', 'trail', 'summit', 'park', 'beach', 'urban']
 
 export default function App() {
-  const { memories, loading } = useMemories()
   const { isDark } = useSystemTheme()
   const [isAddingMemory, setIsAddingMemory] = useState(false)
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
   const [activeFilter, setActiveFilter] = useState<FilterValue>('all')
   const [isListOpen, setIsListOpen] = useState(false)
-  const [mapBounds, setMapBounds] = useState<LatLngBounds | null>(null)
+  const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
-  const handleBoundsChange = useCallback((b: LatLngBounds) => setMapBounds(b), [])
+
+  const { memories, loading } = useMemories(mapBounds)
+
+  const handleBoundsChange = useCallback((b: LatLngBounds) => {
+    setMapBounds({
+      south: b.getSouth(),
+      north: b.getNorth(),
+      west: b.getWest(),
+      east: b.getEast(),
+    })
+  }, [])
   const handleHoverMemory = useCallback((id: string | null) => setHoveredId(id), [])
 
   const filteredMemories = useMemo(
     () => activeFilter === 'all' ? memories : memories.filter((m) => m.type === activeFilter),
     [memories, activeFilter],
-  )
-
-  const visibleMemories = useMemo(
-    () => mapBounds ? filteredMemories.filter((m) => mapBounds.contains([m.lat, m.lng])) : filteredMemories,
-    [filteredMemories, mapBounds],
   )
   const hasActivePanel = isAddingMemory || selectedMemory !== null
 
@@ -72,7 +77,7 @@ export default function App() {
           </div>
         )}
         <Sidebar
-          memories={visibleMemories}
+          memories={filteredMemories}
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
           onSelectMemory={handleSelectMemory}
@@ -111,7 +116,7 @@ export default function App() {
         >
           <span className="font-body text-sm">☰</span>
           <span className="font-body font-semibold text-sm">
-            {visibleMemories.length} {visibleMemories.length === 1 ? 'memory' : 'memories'} in view
+            {filteredMemories.length} {filteredMemories.length === 1 ? 'memory' : 'memories'} in view
           </span>
         </button>
       )}
@@ -130,7 +135,7 @@ export default function App() {
           ))}
         </div>
         <div className="p-2 pb-6">
-          {visibleMemories.length === 0 ? (
+          {filteredMemories.length === 0 ? (
             <div className="p-8 text-center">
               <div className="w-12 h-12 bg-gs-subtle dark:bg-gs-subtle-dark rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3">🗺️</div>
               <p className="font-display font-bold text-sm text-gs-ink dark:text-gs-ink-dark">
@@ -141,7 +146,7 @@ export default function App() {
               </p>
             </div>
           ) : (
-            visibleMemories.map((memory) => (
+            filteredMemories.map((memory) => (
               <button
                 key={memory.id}
                 onClick={() => handleSelectMemory(memory)}

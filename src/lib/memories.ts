@@ -4,6 +4,7 @@ import {
   onSnapshot,
   query,
   orderBy,
+  where,
   serverTimestamp,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -28,13 +29,39 @@ export interface Memory {
   createdAt?: unknown;
 }
 
-export function subscribeToMemories(callback: (memories: Memory[]) => void) {
-  const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
+export interface MapBounds {
+  south: number;
+  north: number;
+  west: number;
+  east: number;
+}
+
+export function subscribeToMemories(
+  callback: (memories: Memory[]) => void,
+  bounds?: MapBounds,
+) {
+  const q = bounds
+    ? query(
+        collection(db, COLLECTION),
+        where('lat', '>=', bounds.south),
+        where('lat', '<=', bounds.north),
+        orderBy('lat', 'desc'),
+      )
+    : query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
+
   return onSnapshot(q, (snapshot) => {
-    const memories = snapshot.docs.map((doc) => ({
+    let memories = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as Memory[];
+
+    // Firestore only range-queries on lat; filter lng client-side
+    if (bounds) {
+      memories = memories.filter(
+        (m) => m.lng >= bounds.west && m.lng <= bounds.east,
+      );
+    }
+
     callback(memories);
   });
 }
