@@ -115,7 +115,7 @@ function MemoryMarker({
         click:     () => { markerRef.current?.closePopup(); onSelect() },
       }}
     >
-      <Popup className="memory-popup" maxWidth={260} closeButton={false} autoPan={false}>
+      <Popup className="memory-popup" minWidth={220} maxWidth={260} closeButton={false} autoPan={false}>
         <MemoryCard memory={memory} compact={true} />
       </Popup>
     </Marker>

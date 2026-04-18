@@ -10,22 +10,21 @@ interface MemoryCardProps {
 export default function MemoryCard({ memory, compact = false, onClose }: MemoryCardProps) {
   if (compact) {
     return (
-      <div className="flex gap-2 p-2.5 bg-white dark:bg-gs-surface-dark font-body max-w-sm">
+      <div className="flex gap-2 p-2.5 bg-white dark:bg-gs-surface-dark font-body w-[220px]">
         {memory.imageUrl && (
           <img
             src={memory.imageUrl}
             alt={memory.title}
-            className="w-24 h-24 rounded-lg object-cover flex-shrink-0"
+            className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
           />
         )}
-        <div className="min-w-0">
-            <div className="leading-tight">
-                <TypePill type={memory.type} size="sm" />
-            </div>
-          <p className="m-0 font-display font-bold text-base text-gs-ink dark:text-gs-ink-dark leading-tight">
+        <div className="min-w-0 flex-1">
+          <div className="leading-tight">
+            <TypePill type={memory.type} size="sm" />
+          </div>
+          <p className="m-0 font-display font-bold text-sm text-gs-ink dark:text-gs-ink-dark leading-tight line-clamp-3 mt-1">
             {memory.title}
           </p>
-
         </div>
       </div>
     )
