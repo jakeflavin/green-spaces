@@ -9,10 +9,9 @@ export default function IntroModal({ onClose }: IntroModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative max-w-sm w-full bg-white dark:bg-gs-surface-dark rounded-2xl shadow-modal overflow-hidden"
+        className="relative max-w-sm w-full bg-white dark:bg-gs-surface-dark rounded-xl shadow-modal overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-1 bg-gs-deep" />
         <div className="p-6">
           <div className="w-12 h-12 bg-gs-subtle dark:bg-gs-subtle-dark rounded-2xl flex items-center justify-center text-2xl mb-4">
             🌿

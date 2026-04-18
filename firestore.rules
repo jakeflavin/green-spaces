@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /memories/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['story', 'lat', 'lng'])
+                    && request.resource.data.story is string
+                    && request.resource.data.lat is number
+                    && request.resource.data.lng is number;
+      allow update, delete: if false;
+    }
+  }
+}

@@ -80,7 +80,21 @@ html.dark .memory-popup .leaflet-popup-tip {
 html.dark ::-webkit-scrollbar-thumb { background: #31423a; }
 html.dark ::-webkit-scrollbar-thumb:hover { background: #9fb0a6; }
 
+/* Prevent iOS Safari from zooming in when an input is focused.
+   iOS zooms whenever the focused input's font-size is below 16px. */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select {
+    font-size: max(16px, 1em);
+  }
+}
+
 /* Date input styling */
+input[type="date"] {
+  /* Force consistent height on iOS — appearance-none alone isn't enough */
+  min-height: 42px;
+  line-height: normal;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0.5;
   cursor: pointer;

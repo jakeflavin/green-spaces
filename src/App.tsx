@@ -81,7 +81,7 @@ export default function App() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden">
-      <Header memoryCount={memories.length} onAddMemory={handleAddMemory} />
+      <Header onAddMemory={handleAddMemory} />
 
       {/* Main content row: sidebar + map + right drawer */}
       <div className="flex-1 flex overflow-hidden relative">
