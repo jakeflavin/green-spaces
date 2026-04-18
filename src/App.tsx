@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useMemories } from './hooks/useMemories'
 import { useSystemTheme } from './hooks/useSystemTheme'
 import type { Memory, MemoryType, MapBounds } from './lib/memories'
@@ -42,6 +42,17 @@ export default function App() {
     [memories, activeFilter],
   )
   const hasActivePanel = isAddingMemory || selectedMemory !== null
+  const mobileSheetOpen = isListOpen || hasActivePanel
+
+  // Keep the theme-color meta tag in sync with the backdrop state so the
+  // iOS status bar colour doesn't mismatch when the bottom sheet is open.
+  useEffect(() => {
+    const lightColor = mobileSheetOpen ? '#3a4d44' : '#4a6358'
+    const darkColor  = mobileSheetOpen ? '#1c2722' : '#0f1714'
+    const color = isDark ? darkColor : lightColor
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((el) => { el.content = color })
+  }, [mobileSheetOpen, isDark])
 
   function handleSelectMemory(memory: Memory) {
     setSelectedMemory(memory)
