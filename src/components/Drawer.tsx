@@ -19,16 +19,13 @@ export default function Drawer({ open, onClose, children }: DrawerProps) {
       {onClose && (
         <div className="w-80 flex-shrink-0">
           <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
-          <div className="flex items-center px-3.5 py-3">
+          <div className="h-14 flex items-center px-3.5">
             <button
               onClick={onClose}
-              className="flex items-center gap-2 font-body text-xs text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-colors cursor-pointer group"
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-gs-soft dark:bg-gs-soft-dark border border-gs-border dark:border-gs-border-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-colors cursor-pointer text-sm"
               aria-label="Close panel"
             >
-              <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-gs-soft dark:bg-gs-soft-dark group-hover:bg-gs-subtle dark:group-hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark transition-colors text-sm">
-                ✕
-              </span>
-              <span>Close</span>
+              ✕
             </button>
           </div>
         </div>
