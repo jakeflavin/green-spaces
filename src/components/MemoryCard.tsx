@@ -19,7 +19,7 @@ export default function MemoryCard({ memory, compact = false, onClose }: MemoryC
           />
         )}
         <div className="min-w-0 flex-1">
-          <div className="leading-none mb-0.5">
+          <div className="flex mb-1">
             <TypePill type={memory.type} size="sm" />
           </div>
           <p className="m-0 font-display font-bold text-sm text-gs-ink dark:text-gs-ink-dark leading-tight line-clamp-3">
