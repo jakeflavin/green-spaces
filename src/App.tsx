@@ -72,7 +72,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-gs-deep dark:bg-gs-night transition-colors">
+    <div className="fixed inset-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden">
       <Header memoryCount={memories.length} onAddMemory={handleAddMemory} />
 
       {/* Main content row: sidebar + map + right drawer */}
