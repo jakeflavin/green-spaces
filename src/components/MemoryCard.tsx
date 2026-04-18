@@ -1,5 +1,6 @@
 import type { Memory } from '../lib/memories'
 import { TypePill } from './TypePill'
+import { TYPE_CONFIG } from './typeConfig'
 
 interface MemoryCardProps {
   memory: Memory
@@ -13,7 +14,7 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
         {memory.imageUrl && (
           <img
             src={memory.imageUrl}
-            alt={memory.title}
+            alt={memory.location ?? TYPE_CONFIG[memory.type].label}
             className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
           />
         )}
@@ -22,7 +23,7 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
             <TypePill type={memory.type} size="sm" />
           </div>
           <p className="m-0 font-display font-bold text-sm text-gs-ink dark:text-gs-ink-dark leading-tight line-clamp-3">
-            {memory.title}
+            {memory.location ?? TYPE_CONFIG[memory.type].label}
           </p>
         </div>
       </div>
@@ -43,7 +44,7 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
         <div className="flex items-center justify-center">
           <img
             src={memory.imageUrl}
-            alt={memory.title}
+            alt={memory.location ?? TYPE_CONFIG[memory.type].label}
             className="w-[90%] h-52 object-cover rounded-md"
           />
         </div>
@@ -57,11 +58,8 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
                       )}
                   </div>
                   <h2 className="font-display font-bold text-2xl text-gs-ink dark:text-gs-ink-dark mt-2 leading-tight">
-                      {memory.title}
+                      {memory.location ?? TYPE_CONFIG[memory.type].label}
                   </h2>
-                  {memory.location && (
-                      <p className="font-body text-sm text-gs-muted dark:text-gs-muted-dark mt-1">📍 {memory.location}</p>
-                  )}
                   <p className="font-body text-sm text-gs-ink/80 dark:text-gs-muted-dark leading-relaxed mt-3">{memory.story}</p>
                   {memory.author && (
                       <div
