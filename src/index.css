@@ -5,7 +5,7 @@
 html {
   color-scheme: light;
   height: -webkit-fill-available;
-  height: 100dvh;
+  height: 100lvh;
   overflow: hidden;
 }
 
@@ -45,6 +45,20 @@ html.dark body {
 }
 .memory-popup .leaflet-popup-content { margin: 0; }
 .memory-popup .leaflet-popup-tip { background: #ffffff; }
+
+/* Center the attribution container at the bottom */
+.leaflet-bottom.leaflet-right {
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  text-align: center;
+}
+/* Optional: Remove background/padding if it looks unbalanced */
+.leaflet-control-attribution {
+  padding: 2px 5px;
+}
 
 html.dark .memory-popup .leaflet-popup-content-wrapper {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
