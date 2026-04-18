@@ -49,21 +49,28 @@ export function subscribeToMemories(
       )
     : query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
 
-  return onSnapshot(q, (snapshot) => {
-    let memories = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Memory[];
+  return onSnapshot(q,
+    (snapshot) => {
+      let memories = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Memory[];
 
-    // Firestore only range-queries on lat; filter lng client-side
-    if (bounds) {
-      memories = memories.filter(
-        (m) => m.lng >= bounds.west && m.lng <= bounds.east,
-      );
-    }
+      // Firestore only range-queries on lat; filter lng client-side
+      if (bounds) {
+        memories = memories.filter(
+          (m) => m.lng >= bounds.west && m.lng <= bounds.east,
+        );
+      }
 
-    callback(memories);
-  });
+      callback(memories);
+    },
+    () => {
+      // On any Firestore error (permissions, missing index, network) return
+      // an empty list so the app exits the loading state instead of hanging.
+      callback([]);
+    },
+  );
 }
 
 export async function uploadImage(file: File): Promise<string> {
