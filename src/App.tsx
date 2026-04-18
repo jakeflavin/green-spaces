@@ -131,7 +131,8 @@ export default function App() {
       {!hasActivePanel && (
         <button
           onClick={() => setIsListOpen(true)}
-          className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 bg-gs-deep dark:bg-gs-soft-dark text-white dark:text-gs-ink-dark px-5 py-3 rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform"
+          className="md:hidden fixed left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 bg-gs-deep dark:bg-gs-soft-dark text-white dark:text-gs-ink-dark px-5 py-3 rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform"
+          style={{ bottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}
         >
           <span className="font-body text-sm">☰</span>
           <span className="font-body font-semibold text-sm">
