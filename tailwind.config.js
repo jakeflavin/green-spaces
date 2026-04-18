@@ -42,6 +42,9 @@ export default {
         'card':       '0 1px 3px rgba(42,56,48,0.08), 0 4px 12px rgba(42,56,48,0.06)',
         'card-hover': '0 4px 8px rgba(42,56,48,0.10), 0 12px 24px rgba(42,56,48,0.10)',
         'modal':      '0 8px 32px rgba(42,56,48,0.18), 0 2px 8px rgba(42,56,48,0.10)',
+        'header':     '0 2px 14px rgba(10,22,40,0.18)',
+        'sidebar-r':  '4px 0 14px rgba(10,22,40,0.11)',
+        'sidebar-l':  '-4px 0 14px rgba(10,22,40,0.11)',
       }
     }
   },

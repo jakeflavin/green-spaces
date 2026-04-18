@@ -44,10 +44,10 @@ function MemoryListItem({ memory, isSelected, isHovered, onSelect, onHover }: Me
       onMouseLeave={() => onHover(null)}
       className={`flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-xl mb-1 transition-all cursor-pointer group ${
         isSelected
-          ? 'bg-gs-subtle dark:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark shadow-sm'
+          ? 'bg-gs-deep/[0.18] dark:bg-gs-subtle-dark border border-gs-deep/[0.22] dark:border-gs-border-dark shadow-sm'
           : isHovered
-          ? 'bg-gs-soft dark:bg-gs-soft-dark'
-          : 'hover:bg-gs-soft dark:hover:bg-gs-soft-dark'
+          ? 'bg-gs-deep/[0.10] dark:bg-gs-soft-dark'
+          : 'hover:bg-gs-deep/[0.10] dark:hover:bg-gs-soft-dark'
       }`}
     >
       <div className={`w-11 h-11 rounded-md flex-shrink-0 overflow-hidden ${
@@ -102,7 +102,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-shrink-0 flex-col overflow-hidden bg-gs-panel dark:bg-gs-surface-dark transition-[width] duration-300 ease-out ${
+      className={`hidden md:flex flex-shrink-0 flex-col overflow-hidden bg-gs-panel dark:bg-gs-surface-dark shadow-sidebar-r dark:shadow-[4px_0_16px_rgba(0,0,0,0.40)] z-10 transition-[width] duration-300 ease-out ${
         collapsed ? 'w-12' : 'w-72'
       }`}
     >
