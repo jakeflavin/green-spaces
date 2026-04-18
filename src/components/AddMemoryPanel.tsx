@@ -242,7 +242,7 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
           <div className="min-w-0">
             <label>
               <span className={labelClass}>Date visited</span>
-              <input type="date" className={inputClass} value={date} onChange={(e) => setDate(e.target.value)} />
+              <input type="date" className={`${inputClass} appearance-none`} value={date} onChange={(e) => setDate(e.target.value)} />
             </label>
           </div>
           <div className="sm:col-span-2">
