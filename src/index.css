@@ -5,7 +5,7 @@
 html {
   color-scheme: light;
   height: -webkit-fill-available;
-  height: 100lvh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -81,10 +81,11 @@ html.dark ::-webkit-scrollbar-thumb { background: #31423a; }
 html.dark ::-webkit-scrollbar-thumb:hover { background: #9fb0a6; }
 
 /* Prevent iOS Safari from zooming in when an input is focused.
-   iOS zooms whenever the focused input's font-size is below 16px. */
+   iOS zooms whenever the focused input's font-size is below 16px.
+   !important overrides Tailwind class specificity (class > element selector). */
 @supports (-webkit-touch-callout: none) {
   input, textarea, select {
-    font-size: max(16px, 1em);
+    font-size: 16px !important;
   }
 }
 
