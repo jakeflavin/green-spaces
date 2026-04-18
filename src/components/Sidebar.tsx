@@ -136,7 +136,7 @@ export default function Sidebar({
 
       {/* Footer — credit text (hidden when collapsed) + collapse button (always visible) */}
       <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
-      <div className="w-72 flex-shrink-0 h-14 flex items-center justify-center px-3.5">
+      <div className="w-72 flex-shrink-0 h-10 flex items-center justify-center px-3.5">
         <p className={`font-body text-xs text-gs-muted dark:text-gs-muted-dark transition-opacity duration-200 ${
           collapsed ? 'opacity-0' : 'opacity-100'
         }`}>
@@ -147,7 +147,7 @@ export default function Sidebar({
       <button
         onClick={() => setCollapsed((c) => !c)}
         title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center rounded-lg bg-gs-soft dark:bg-gs-soft-dark border border-gs-border dark:border-gs-border-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark transition-colors cursor-pointer group"
+        className="absolute bottom-1 right-1 w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
