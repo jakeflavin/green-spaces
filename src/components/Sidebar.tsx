@@ -54,7 +54,7 @@ function MemoryListItem({ memory, isSelected, isHovered, onSelect, onHover }: Me
         memory.imageUrl ? '' : 'bg-gs-subtle dark:bg-gs-subtle-dark flex items-center justify-center text-lg'
       }`}>
         {memory.imageUrl
-          ? <img src={memory.imageUrl} alt={memory.title} className="w-full h-full object-cover" />
+          ? <img src={memory.imageUrl} alt={memory.location ?? TYPE_CONFIG[memory.type].label} className="w-full h-full object-cover" />
           : <span>🌿</span>
         }
       </div>
@@ -64,7 +64,7 @@ function MemoryListItem({ memory, isSelected, isHovered, onSelect, onHover }: Me
             ? 'text-gs-deep dark:text-gs-ink-dark'
             : 'text-gs-ink dark:text-gs-ink-dark group-hover:text-gs-deep dark:group-hover:text-gs-ink-dark'
         }`}>
-          {memory.title}
+          {memory.location ?? TYPE_CONFIG[memory.type].label}
         </p>
         {memory.location && (
           <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-0.5 truncate">

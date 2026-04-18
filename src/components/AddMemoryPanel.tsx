@@ -60,6 +60,19 @@ function LocationPicker({
   )
 }
 
+async function reverseGeocode(lat: number, lng: number): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    return typeof data.name === 'string' && data.name ? data.name : null
+  } catch {
+    return null
+  }
+}
+
 function formatDateForInput(d: Date): string {
   const y = d.getFullYear()
   const m = String(d.getMonth() + 1).padStart(2, '0')
@@ -74,7 +87,6 @@ interface AddMemoryPanelProps {
 
 export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps) {
   const [type, setType]         = useState<MemoryType>('trail')
-  const [title, setTitle]       = useState('')
   const [location, setLocation] = useState('')
   const [date, setDate]         = useState('')
   const [author, setAuthor]     = useState('')
@@ -110,6 +122,9 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
         setLat(parsed.latitude)
         setLng(parsed.longitude)
         setLocationSource('exif')
+        reverseGeocode(parsed.latitude, parsed.longitude).then((name) => {
+          if (name) setLocation(name)
+        })
       } else {
         setLocationSource('manual')
       }
@@ -123,6 +138,15 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
     }
   }
 
+  async function handlePinPlaced(la: number, lo: number) {
+    setLat(la)
+    setLng(lo)
+    if (!location.trim()) {
+      const name = await reverseGeocode(la, lo)
+      if (name) setLocation(name)
+    }
+  }
+
   function removeImage() {
     setImageFile(null)
     setPreview(null)
@@ -133,7 +157,7 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!title.trim() || !story.trim()) { setError('Title and story are required.'); return }
+    if (!story.trim()) { setError('Story is required.'); return }
     if (!imageFile)                      { setError('A photo is required.'); return }
     if (lat === null || lng === null)    { setError('Location is required — click the map below to place your pin.'); return }
 
@@ -141,7 +165,6 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
     setError(null)
     try {
       await addMemory({
-        title: title.trim(),
         location: location.trim() || undefined,
         lat,
         lng,
@@ -209,7 +232,7 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
             <span className={labelClass}>
               Place your pin <span className="text-red-400">*</span>
             </span>
-            <LocationPicker lat={lat} lng={lng} onPick={(la, lo) => { setLat(la); setLng(lo) }} isDark={isDark} />
+            <LocationPicker lat={lat} lng={lng} onPick={handlePinPlaced} isDark={isDark} />
             {lat !== null && (
               <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-1.5">
                 ✓ Placed at {lat.toFixed(4)}, {lng!.toFixed(4)}
@@ -227,12 +250,6 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
 
         {/* ── Form fields ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="sm:col-span-2">
-            <label>
-              <span className={labelClass}>Title <span className="text-red-400">*</span></span>
-              <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={100} placeholder="What do you call this place?" />
-            </label>
-          </div>
           <div>
             <label>
               <span className={labelClass}>Location name</span>
