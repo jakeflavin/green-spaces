@@ -40,24 +40,26 @@ export default function MemoryCard({ memory, compact = false, onClose }: MemoryC
     : null
 
   return (
-    <div className="font-body relative">
+    <div className="font-body">
       {onClose && (
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 dark:bg-gs-surface-dark/90 hover:bg-white dark:hover:bg-gs-surface-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer text-sm font-body font-medium"
-          aria-label="Close"
-        >✕</button>
+        <div className="flex items-center justify-end px-5 pt-4 pb-3 flex-shrink-0">
+          <button
+            onClick={onClose}
+            className="w-8 h-8 bg-gs-soft dark:bg-gs-soft-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer flex-shrink-0 text-sm font-body font-medium"
+            aria-label="Close"
+          >✕</button>
+        </div>
       )}
 
       {memory.imageUrl && (
-          <div className="flex items-center pt-3 justify-center">
-              <img
-                  src={memory.imageUrl}
-                  alt={memory.title}
-                  className="w-[90%] h-52 object-cover rounded-md"
-              />
-          </div>
-              )}
+        <div className="flex items-center justify-center">
+          <img
+            src={memory.imageUrl}
+            alt={memory.title}
+            className="w-[90%] h-52 object-cover rounded-md"
+          />
+        </div>
+      )}
               <div className="p-5">
                   <div className="flex items-center gap-2 flex-wrap">
                       <TypePill type={memory.type} size="sm"/>
