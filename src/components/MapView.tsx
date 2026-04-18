@@ -134,7 +134,7 @@ interface MapViewProps {
 
 export default function MapView({ isDark, memories, onSelectMemory, flyTarget, onBoundsChange, hoveredId, onHoverMemory }: MapViewProps) {
   return (
-    <div className="flex-1 relative">
+    <div className="flex-1 relative z-0">
       <MapContainer
         center={[40.5, -77.5]}
         zoom={7}
