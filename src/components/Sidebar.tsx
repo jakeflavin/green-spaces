@@ -102,7 +102,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-shrink-0 flex-col overflow-hidden bg-gs-panel dark:bg-gs-surface-dark shadow-sidebar-r dark:shadow-[4px_0_16px_rgba(0,0,0,0.40)] z-10 transition-[width] duration-300 ease-out ${
+      className={`hidden md:flex flex-shrink-0 flex-col overflow-hidden relative bg-gs-panel dark:bg-gs-surface-dark shadow-sidebar-r dark:shadow-[4px_0_16px_rgba(0,0,0,0.40)] z-10 transition-[width] duration-300 ease-out ${
         collapsed ? 'w-12' : 'w-72'
       }`}
     >
@@ -134,37 +134,38 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Footer — credit text + collapse button */}
+      {/* Footer — credit text (hidden when collapsed) + collapse button (always visible) */}
       <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
-      <div className="w-72 flex-shrink-0 flex items-center px-3.5 py-3">
-        <p className={`flex-1 font-body text-xs text-gs-muted dark:text-gs-muted-dark transition-opacity duration-200 ${
-          collapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      <div className="w-72 flex-shrink-0 flex items-center pl-3.5 pr-12 py-3">
+        <p className={`font-body text-xs text-gs-muted dark:text-gs-muted-dark transition-opacity duration-200 ${
+          collapsed ? 'opacity-0' : 'opacity-100'
         }`}>
           made with ❤️ by jake flavin
         </p>
-        <button
-          onClick={() => setCollapsed((c) => !c)}
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg hover:bg-gs-soft dark:hover:bg-gs-soft-dark transition-colors cursor-pointer group"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={`flex-shrink-0 text-gs-muted dark:text-gs-muted-dark group-hover:text-gs-ink dark:group-hover:text-gs-ink-dark transition-all duration-300 ${
-              collapsed ? 'rotate-0' : 'rotate-180'
-            }`}
-          >
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
       </div>
+      {/* Button pinned to bottom-right of the aside — stays within w-12 when collapsed */}
+      <button
+        onClick={() => setCollapsed((c) => !c)}
+        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        className="absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gs-soft dark:hover:bg-gs-soft-dark transition-colors cursor-pointer group"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`text-gs-muted dark:text-gs-muted-dark group-hover:text-gs-ink dark:group-hover:text-gs-ink-dark transition-all duration-300 ${
+            collapsed ? 'rotate-0' : 'rotate-180'
+          }`}
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
     </aside>
   )
 }
