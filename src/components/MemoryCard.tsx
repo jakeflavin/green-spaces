@@ -65,7 +65,7 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
                   <p className="font-body text-sm text-gs-ink/80 dark:text-gs-muted-dark leading-relaxed mt-3">{memory.story}</p>
                   {memory.author && (
                       <div
-                          className="mt-4 pt-4 border-t border-gs-border dark:border-gs-border-dark flex items-center gap-2">
+                          className="mt-4 pt-4 flex items-center gap-2">
                           <div
                               className="w-6 h-6 rounded-full bg-gs-subtle dark:bg-gs-subtle-dark flex items-center justify-center text-xs">
                               👤
