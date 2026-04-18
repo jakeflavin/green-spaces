@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useMemories } from './hooks/useMemories'
 import { useSystemTheme } from './hooks/useSystemTheme'
 import type { Memory, MemoryType } from './lib/memories'
@@ -6,76 +6,14 @@ import { TypePill } from './components/TypePill'
 import Header from './components/Header'
 import MapView, { type LatLngBounds } from './components/MapView'
 import Sidebar from './components/Sidebar'
-import MemoryDetailOverlay from './components/MemoryDetailOverlay'
-import AddMemoryModal from './components/AddMemoryModal'
+import BottomSheet from './components/BottomSheet'
+import Drawer from './components/Drawer'
+import MemoryCard from './components/MemoryCard'
+import AddMemoryPanel from './components/AddMemoryPanel'
 
 type FilterValue = 'all' | MemoryType
 
 const FILTER_ORDER: FilterValue[] = ['all', 'trail', 'summit', 'park', 'beach', 'urban']
-
-function BottomSheet({
-  open,
-  onClose,
-  children,
-}: {
-  open: boolean
-  onClose: () => void
-  children: React.ReactNode
-}) {
-  const [dragY, setDragY] = useState(0)
-  const startYRef = useRef(0)
-  const isDraggingRef = useRef(false)
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  function onTouchStart(e: React.TouchEvent) {
-    if ((contentRef.current?.scrollTop ?? 0) > 5) return
-    startYRef.current = e.touches[0].clientY
-    isDraggingRef.current = true
-  }
-
-  function onTouchMove(e: React.TouchEvent) {
-    if (!isDraggingRef.current) return
-    const delta = e.touches[0].clientY - startYRef.current
-    if (delta > 0) setDragY(delta)
-  }
-
-  function onTouchEnd() {
-    if (isDraggingRef.current && dragY > 80) onClose()
-    isDraggingRef.current = false
-    setDragY(0)
-  }
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`md:hidden fixed inset-0 z-[999] bg-gs-ink/50 transition-opacity duration-300 ${
-          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={onClose}
-      />
-      {/* Sheet */}
-      <div
-        className={`md:hidden fixed bottom-0 left-0 right-0 z-[1100] bg-gs-surface dark:bg-gs-surface-dark rounded-t-2xl shadow-modal flex flex-col transition-transform duration-300 ease-out ${
-          open ? 'translate-y-0' : 'translate-y-full'
-        }`}
-        style={dragY > 0 ? { transform: `translateY(${dragY}px)`, transition: 'none' } : undefined}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        {/* Drag handle */}
-        <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
-          <div className="w-10 h-1 rounded-full bg-gs-border dark:bg-gs-border-dark" />
-        </div>
-        {/* Scrollable content */}
-        <div ref={contentRef} className="overflow-y-auto max-h-[72vh]">
-          {children}
-        </div>
-      </div>
-    </>
-  )
-}
 
 export default function App() {
   const { memories, loading } = useMemories()
@@ -98,7 +36,7 @@ export default function App() {
     () => mapBounds ? filteredMemories.filter((m) => mapBounds.contains([m.lat, m.lng])) : filteredMemories,
     [filteredMemories, mapBounds],
   )
-  const hasActiveOverlay = isAddingMemory || selectedMemory !== null
+  const hasActivePanel = isAddingMemory || selectedMemory !== null
 
   function handleSelectMemory(memory: Memory) {
     setSelectedMemory(memory)
@@ -112,9 +50,16 @@ export default function App() {
     setSelectedMemory(null)
   }
 
+  function handleClosePanel() {
+    setSelectedMemory(null)
+    setIsAddingMemory(false)
+  }
+
   return (
-    <div className="flex flex-col h-screen bg-gs-deep dark:bg-gs-night transition-colors">
+    <div className="flex flex-col h-[100dvh] bg-gs-deep dark:bg-gs-night transition-colors">
       <Header memoryCount={memories.length} onAddMemory={handleAddMemory} />
+
+      {/* Main content row: sidebar + map + right drawer */}
       <div className="flex-1 flex overflow-hidden relative">
         {loading && (
           <div className="absolute inset-0 z-[450] flex items-center justify-center bg-white/85 dark:bg-gs-night/85 backdrop-blur-sm">
@@ -144,10 +89,23 @@ export default function App() {
           hoveredId={hoveredId}
           onHoverMemory={handleHoverMemory}
         />
+        {/* Desktop right panel — sits alongside the map, no overlay */}
+        <Drawer open={hasActivePanel}>
+          {selectedMemory && (
+            <MemoryCard memory={selectedMemory} onClose={handleClosePanel} />
+          )}
+          {isAddingMemory && (
+            <AddMemoryPanel
+              isDark={isDark}
+              onClose={handleClosePanel}
+              onSaved={handleClosePanel}
+            />
+          )}
+        </Drawer>
       </div>
 
-      {/* Mobile: floating button to open sheet */}
-      {!hasActiveOverlay && (
+      {/* Mobile: floating button to open memory list */}
+      {!hasActivePanel && (
         <button
           onClick={() => setIsListOpen(true)}
           className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 bg-gs-deep dark:bg-gs-soft-dark text-white dark:text-gs-ink-dark px-5 py-3 rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform"
@@ -159,9 +117,8 @@ export default function App() {
         </button>
       )}
 
-      {/* Mobile: bottom sheet */}
-      <BottomSheet open={isListOpen && !hasActiveOverlay} onClose={() => setIsListOpen(false)}>
-        {/* Filter pills */}
+      {/* Mobile: memory list bottom sheet */}
+      <BottomSheet open={isListOpen && !hasActivePanel} onClose={() => setIsListOpen(false)}>
         <div className="grid grid-cols-3 gap-1.5 px-3 py-2.5 border-b border-gs-border dark:border-gs-border-dark">
           {FILTER_ORDER.map((type) => (
             <TypePill
@@ -173,7 +130,6 @@ export default function App() {
             />
           ))}
         </div>
-        {/* Memory list */}
         <div className="p-2 pb-6">
           {visibleMemories.length === 0 ? (
             <div className="p-8 text-center">
@@ -214,19 +170,19 @@ export default function App() {
         </div>
       </BottomSheet>
 
-      {selectedMemory && (
-        <MemoryDetailOverlay
-          memory={selectedMemory}
-          onClose={() => setSelectedMemory(null)}
-        />
-      )}
-      {isAddingMemory && (
-        <AddMemoryModal
-          isDark={isDark}
-          onClose={() => setIsAddingMemory(false)}
-          onSaved={() => setIsAddingMemory(false)}
-        />
-      )}
+      {/* Mobile: detail / add-form bottom sheet */}
+      <BottomSheet open={hasActivePanel} onClose={handleClosePanel}>
+        {selectedMemory && (
+          <MemoryCard memory={selectedMemory} onClose={handleClosePanel} />
+        )}
+        {isAddingMemory && (
+          <AddMemoryPanel
+            isDark={isDark}
+            onClose={handleClosePanel}
+            onSaved={handleClosePanel}
+          />
+        )}
+      </BottomSheet>
     </div>
   )
 }

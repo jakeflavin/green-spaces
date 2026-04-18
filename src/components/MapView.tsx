@@ -63,6 +63,17 @@ function createPinIcon(type: MemoryType, highlighted = false): L.DivIcon {
   })
 }
 
+function MapResizer() {
+  const map = useMap()
+  useEffect(() => {
+    const container = map.getContainer()
+    const observer = new ResizeObserver(() => map.invalidateSize())
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [map])
+  return null
+}
+
 function FlyToTarget({ target }: { target: Memory | null }) {
   const map = useMap()
   useEffect(() => {
@@ -138,6 +149,7 @@ export default function MapView({ isDark, memories, onSelectMemory, flyTarget, o
           subdomains="abcd"
         />
 
+        <MapResizer />
         <BoundsTracker onBoundsChange={onBoundsChange} />
         <FlyToTarget target={flyTarget} />
         {memories.map((memory) => (

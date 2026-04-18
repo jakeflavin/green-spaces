@@ -21,7 +21,7 @@ export function TypePill({ type, size, active = false, onClick }: TypePillProps)
   }
 
   // size === 'md'
-  const activeClasses = 'bg-gs-deep dark:bg-gs-soft-dark text-white/90 dark:text-gs-ink-dark shadow-sm'
+  const activeClasses = 'bg-gs-deep dark:bg-gs-deep text-white dark:text-white shadow-sm'
   const inactiveClasses = 'bg-gs-soft dark:bg-gs-soft-dark text-gs-muted dark:text-gs-muted-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark hover:text-gs-deep dark:hover:text-gs-ink-dark'
 
   return (

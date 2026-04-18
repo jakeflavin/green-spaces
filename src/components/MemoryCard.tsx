@@ -4,9 +4,10 @@ import { TypePill } from './TypePill'
 interface MemoryCardProps {
   memory: Memory
   compact?: boolean
+  onClose?: () => void
 }
 
-export default function MemoryCard({ memory, compact = false }: MemoryCardProps) {
+export default function MemoryCard({ memory, compact = false, onClose }: MemoryCardProps) {
   if (compact) {
     return (
       <div className="flex gap-2 p-2.5 bg-white dark:bg-gs-surface-dark font-body max-w-sm">
@@ -39,37 +40,51 @@ export default function MemoryCard({ memory, compact = false }: MemoryCardProps)
     : null
 
   return (
-    <div className="font-body bg-white dark:bg-gs-surface-dark">
-      {memory.imageUrl && (
-        <img
-          src={memory.imageUrl}
-          alt={memory.title}
-          className="w-full h-52 object-cover"
-        />
+    <div className="font-body bg-white dark:bg-gs-surface-dark relative">
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 dark:bg-gs-surface-dark/90 hover:bg-white dark:hover:bg-gs-surface-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer text-sm font-body font-medium"
+          aria-label="Close"
+        >✕</button>
       )}
-      <div className="p-5">
-        <div className="flex items-center gap-2 flex-wrap">
-          <TypePill type={memory.type} size="sm" />
-          {formattedDate && (
-            <span className="font-body text-xs text-gs-muted dark:text-gs-muted-dark">{formattedDate}</span>
-          )}
-        </div>
-        <h2 className="font-display font-bold text-2xl text-gs-ink dark:text-gs-ink-dark mt-2 leading-tight">
-          {memory.title}
-        </h2>
-        {memory.location && (
-          <p className="font-body text-sm text-gs-muted dark:text-gs-muted-dark mt-1">📍 {memory.location}</p>
-        )}
-        <p className="font-body text-sm text-gs-ink/80 dark:text-gs-muted-dark leading-relaxed mt-3">{memory.story}</p>
-        {memory.author && (
-          <div className="mt-4 pt-4 border-t border-gs-border dark:border-gs-border-dark flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-gs-subtle dark:bg-gs-subtle-dark flex items-center justify-center text-xs">
-              👤
-            </div>
-            <span className="font-body text-xs text-gs-muted dark:text-gs-muted-dark">{memory.author}</span>
+
+      {memory.imageUrl && (
+          <div className="flex items-center pt-3 justify-center">
+              <img
+                  src={memory.imageUrl}
+                  alt={memory.title}
+                  className="w-[90%] h-52 object-cover rounded-md"
+              />
           </div>
-        )}
-      </div>
-    </div>
-  )
-}
+              )}
+              <div className="p-5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                      <TypePill type={memory.type} size="sm"/>
+                      {formattedDate && (
+                          <span
+                              className="font-body text-xs text-gs-muted dark:text-gs-muted-dark">{formattedDate}</span>
+                      )}
+                  </div>
+                  <h2 className="font-display font-bold text-2xl text-gs-ink dark:text-gs-ink-dark mt-2 leading-tight">
+                      {memory.title}
+                  </h2>
+                  {memory.location && (
+                      <p className="font-body text-sm text-gs-muted dark:text-gs-muted-dark mt-1">📍 {memory.location}</p>
+                  )}
+                  <p className="font-body text-sm text-gs-ink/80 dark:text-gs-muted-dark leading-relaxed mt-3">{memory.story}</p>
+                  {memory.author && (
+                      <div
+                          className="mt-4 pt-4 border-t border-gs-border dark:border-gs-border-dark flex items-center gap-2">
+                          <div
+                              className="w-6 h-6 rounded-full bg-gs-subtle dark:bg-gs-subtle-dark flex items-center justify-center text-xs">
+                              👤
+                          </div>
+                          <span
+                              className="font-body text-xs text-gs-muted dark:text-gs-muted-dark">{memory.author}</span>
+                      </div>
+                  )}
+              </div>
+          </div>
+      )
+      }

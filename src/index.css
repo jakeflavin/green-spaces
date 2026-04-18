@@ -4,6 +4,8 @@
 
 html {
   color-scheme: light;
+  height: 100%;
+  overflow: hidden;
 }
 
 html.dark {
@@ -16,6 +18,8 @@ body {
   background-color: #4a6358;
   font-family: 'Plus Jakarta Sans', sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
+  height: 100%;
+  overflow: hidden;
 }
 
 html.dark body {
