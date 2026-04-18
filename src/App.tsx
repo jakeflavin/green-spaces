@@ -80,11 +80,14 @@ export default function App() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden">
-      <Header memoryCount={memories.length} onAddMemory={handleAddMemory} />
+    <div
+      className="fixed inset-x-0 top-0 flex flex-col bg-gs-deep dark:bg-gs-night transition-colors overflow-hidden"
+      style={{ height: 'var(--app-height, 100dvh)' }}
+    >
+      <Header onAddMemory={handleAddMemory} />
 
       {/* Main content row: sidebar + map + right drawer */}
-      <div className="flex-1 flex overflow-hidden relative">
+      <div className="flex-1 min-h-0 flex overflow-hidden relative">
         {loading && (
           <div className="absolute inset-0 z-[450] flex items-center justify-center bg-white/85 dark:bg-gs-night/85 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-3">
@@ -128,7 +131,7 @@ export default function App() {
       </div>
 
       {/* Mobile: floating button to open memory list */}
-      {!hasActivePanel && (
+      {!hasActivePanel && !showIntro && (
         <button
           onClick={() => setIsListOpen(true)}
           className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 bg-gs-deep dark:bg-gs-soft-dark text-white dark:text-gs-ink-dark px-5 py-3 rounded-full shadow-lg cursor-pointer active:scale-95 transition-transform"
