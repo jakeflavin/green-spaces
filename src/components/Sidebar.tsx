@@ -134,30 +134,37 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Collapse toggle — always visible; icon stays within the w-12 strip */}
-      <button
-        onClick={() => setCollapsed((c) => !c)}
-        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className="w-72 flex-shrink-0 flex items-center gap-2.5 px-3.5 py-3 border-t border-gs-border dark:border-gs-border-dark hover:bg-gs-soft dark:hover:bg-gs-soft-dark transition-colors cursor-pointer group"
-      >
-        {/* Chevron icon — always within the first 48px so it's visible when collapsed */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`flex-shrink-0 text-gs-muted dark:text-gs-muted-dark group-hover:text-gs-ink dark:group-hover:text-gs-ink-dark transition-all duration-300 ${
-            collapsed ? 'rotate-0' : 'rotate-180'
-          }`}
+      {/* Footer — credit text + collapse button */}
+      <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
+      <div className="w-72 flex-shrink-0 flex items-center px-3.5 py-3">
+        <p className={`flex-1 font-body text-xs text-gs-muted dark:text-gs-muted-dark transition-opacity duration-200 ${
+          collapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}>
+          made with ❤️ by jake flavin
+        </p>
+        <button
+          onClick={() => setCollapsed((c) => !c)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg hover:bg-gs-soft dark:hover:bg-gs-soft-dark transition-colors cursor-pointer group"
         >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`flex-shrink-0 text-gs-muted dark:text-gs-muted-dark group-hover:text-gs-ink dark:group-hover:text-gs-ink-dark transition-all duration-300 ${
+              collapsed ? 'rotate-0' : 'rotate-180'
+            }`}
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
     </aside>
   )
 }
