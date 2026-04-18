@@ -8,9 +8,9 @@ import { TypePill } from './TypePill'
 const TYPES: MemoryType[] = ['trail', 'summit', 'park', 'beach', 'urban']
 
 const inputClass =
-  'w-full bg-gs-soft border border-gs-border rounded-xl px-3.5 py-2.5 font-body text-sm text-gs-ink placeholder:text-gs-muted/60 focus:outline-none focus:ring-2 focus:ring-gs-deep/25 focus:border-gs-deep transition-all'
+  'w-full bg-gs-soft dark:bg-gs-soft-dark border border-gs-border dark:border-gs-border-dark rounded-xl px-3.5 py-2.5 font-body text-sm text-gs-ink dark:text-gs-ink-dark placeholder:text-gs-muted/60 dark:placeholder:text-gs-muted-dark/70 focus:outline-none focus:ring-2 focus:ring-gs-deep/25 dark:focus:ring-gs-muted-dark/25 focus:border-gs-deep dark:focus:border-gs-muted-dark transition-all'
 
-const labelClass = 'font-body font-medium text-xs text-gs-muted block mb-1.5'
+const labelClass = 'font-body font-medium text-xs text-gs-muted dark:text-gs-muted-dark block mb-1.5'
 
 const dotIcon = L.divIcon({
   html: `<div style="width:14px;height:14px;background:#4a6358;border:2.5px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
@@ -24,9 +24,19 @@ function MapPickHandler({ onPick }: { onPick: (lat: number, lng: number) => void
   return null
 }
 
-function LocationPicker({ lat, lng, onPick }: { lat: number | null; lng: number | null; onPick: (lat: number, lng: number) => void }) {
+function LocationPicker({
+  lat,
+  lng,
+  onPick,
+  isDark,
+}: {
+  lat: number | null
+  lng: number | null
+  onPick: (lat: number, lng: number) => void
+  isDark: boolean
+}) {
   return (
-    <div className="rounded-xl overflow-hidden border border-gs-border" style={{ height: 180 }}>
+    <div className="rounded-xl overflow-hidden border border-gs-border dark:border-gs-border-dark" style={{ height: 180 }}>
       <MapContainer
         center={[20, 0]}
         zoom={2}
@@ -34,7 +44,13 @@ function LocationPicker({ lat, lng, onPick }: { lat: number | null; lng: number 
         zoomControl={false}
         scrollWheelZoom={false}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer
+          attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}
+          url={isDark
+            ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png'
+            : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png'}
+          subdomains="abcd"
+        />
         <MapPickHandler onPick={onPick} />
         {lat !== null && lng !== null && (
           <Marker position={[lat, lng]} icon={dotIcon} />
@@ -52,11 +68,12 @@ function formatDateForInput(d: Date): string {
 }
 
 interface AddMemoryModalProps {
+  isDark: boolean
   onClose: () => void
   onSaved: () => void
 }
 
-export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps) {
+export default function AddMemoryModal({ isDark, onClose, onSaved }: AddMemoryModalProps) {
   const [type, setType]         = useState<MemoryType>('trail')
   const [title, setTitle]       = useState('')
   const [location, setLocation] = useState('')
@@ -147,25 +164,22 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
 
   return (
     <div
-      className="fixed inset-0 z-[600] flex items-center justify-center p-0 sm:p-6 bg-gs-ink/70 backdrop-blur-md"
+      className="fixed inset-0 z-[1300] flex items-center justify-center p-0 sm:p-6 bg-gs-ink/70 backdrop-blur-md"
       onClick={onClose}
     >
       <div
-        className="relative max-w-lg w-full bg-white max-h-[100dvh] sm:max-h-[90vh] sm:rounded-2xl overflow-y-auto shadow-modal"
+        className="relative rounded-md max-w-lg w-full bg-white dark:bg-gs-surface-dark max-h-[100dvh] sm:max-h-[85vh] overflow-y-auto shadow-modal"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Lime accent bar */}
-        <div className="h-1 bg-gs-deep rounded-t-2xl" />
-
         {/* Header */}
         <div className="flex items-start justify-between px-5 pt-4 pb-3">
           <div>
-            <h2 className="font-display font-bold text-xl text-gs-ink leading-tight">Pin a memory</h2>
-            <p className="font-body text-xs text-gs-muted mt-0.5">Share a place that matters to you</p>
+            <h2 className="font-display font-bold text-xl text-gs-ink dark:text-gs-ink-dark leading-tight">Pin a memory</h2>
+            <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-0.5">Share a place that matters to you</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 bg-gs-soft hover:bg-gs-subtle border border-gs-border rounded-full flex items-center justify-center text-gs-muted hover:text-gs-ink transition-all cursor-pointer flex-shrink-0 text-sm font-body font-medium mt-0.5"
+            className="w-8 h-8 bg-gs-soft dark:bg-gs-soft-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer flex-shrink-0 text-sm font-body font-medium mt-0.5"
             aria-label="Close"
           >✕</button>
         </div>
@@ -183,10 +197,10 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
                 {/* Location status badge */}
                 <div className={`absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-body font-medium ${
                   extracting
-                    ? 'bg-white/90 text-gs-muted'
+                    ? 'bg-white/90 dark:bg-gs-surface-dark/90 text-gs-muted dark:text-gs-muted-dark'
                     : locationSource === 'exif'
-                    ? 'bg-gs-deep/90 text-white'
-                    : 'bg-white/90 text-gs-muted'
+                    ? 'bg-gs-deep/90 dark:bg-gs-soft-dark/90 text-white dark:text-gs-ink-dark'
+                    : 'bg-white/90 dark:bg-gs-surface-dark/90 text-gs-muted dark:text-gs-muted-dark'
                 }`}>
                   {extracting && '⏳ Reading location…'}
                   {!extracting && locationSource === 'exif' && `✓ Location found · ${lat!.toFixed(3)}, ${lng!.toFixed(3)}`}
@@ -195,15 +209,15 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="absolute top-2 right-2 bg-white/90 hover:bg-white text-gs-ink text-xs font-body font-medium px-2.5 py-1 rounded-full shadow transition-all cursor-pointer"
+                  className="absolute top-2 right-2 bg-white/90 hover:bg-white dark:bg-gs-surface-dark/90 dark:hover:bg-gs-surface-dark text-gs-ink dark:text-gs-ink-dark text-xs font-body font-medium px-2.5 py-1 rounded-full shadow transition-all cursor-pointer"
                 >Remove</button>
               </div>
             ) : (
-              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-gs-border rounded-xl p-8 text-center cursor-pointer hover:border-gs-deep hover:bg-gs-soft transition-all group">
+              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-gs-border dark:border-gs-border-dark rounded-xl p-8 text-center cursor-pointer hover:border-gs-deep dark:hover:border-gs-muted-dark hover:bg-gs-soft dark:hover:bg-gs-soft-dark transition-all group">
                 <span className="text-3xl group-hover:scale-110 transition-transform">📷</span>
                 <div>
-                  <p className="font-body font-medium text-sm text-gs-ink">Upload a photo</p>
-                  <p className="font-body text-xs text-gs-muted mt-0.5">Location will be read from the photo automatically</p>
+                  <p className="font-body font-medium text-sm text-gs-ink dark:text-gs-ink-dark">Upload a photo</p>
+                  <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-0.5">Location will be read from the photo automatically</p>
                 </div>
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
               </label>
@@ -216,9 +230,9 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
               <span className={labelClass}>
                 Place your pin <span className="text-red-400">*</span>
               </span>
-              <LocationPicker lat={lat} lng={lng} onPick={(la, lo) => { setLat(la); setLng(lo) }} />
+              <LocationPicker lat={lat} lng={lng} onPick={(la, lo) => { setLat(la); setLng(lo) }} isDark={isDark} />
               {lat !== null && (
-                <p className="font-body text-xs text-gs-muted mt-1.5">
+                <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-1.5">
                   ✓ Placed at {lat.toFixed(4)}, {lng!.toFixed(4)}
                 </p>
               )}
@@ -270,22 +284,17 @@ export default function AddMemoryModal({ onClose, onSaved }: AddMemoryModalProps
 
           {/* Error */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5">
-              <p className="font-body text-sm text-red-600">{error}</p>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl px-3.5 py-2.5">
+              <p className="font-body text-sm text-red-600 dark:text-red-300">{error}</p>
             </div>
           )}
 
           {/* Footer */}
           <div className="flex justify-end gap-2 pt-1">
             <button
-              type="button"
-              onClick={onClose}
-              className="font-body font-medium text-sm text-gs-muted px-4 py-2.5 rounded-xl border border-gs-border hover:bg-gs-soft hover:text-gs-ink transition-all cursor-pointer"
-            >Cancel</button>
-            <button
               type="submit"
               disabled={!canSubmit}
-              className="font-body font-medium text-sm text-white bg-gs-deep px-5 py-2.5 rounded-xl hover:bg-gs-ink transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+              className="font-body font-medium text-sm text-white dark:text-gs-night bg-gs-deep dark:bg-gs-ink-dark px-5 py-2.5 rounded-xl hover:bg-gs-ink dark:hover:bg-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm w-full"
             >{saving ? '🌱 Saving…' : '📍 Pin this memory'}</button>
           </div>
         </form>

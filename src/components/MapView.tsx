@@ -112,6 +112,7 @@ function MemoryMarker({
 }
 
 interface MapViewProps {
+  isDark: boolean
   memories: Memory[]
   onSelectMemory: (memory: Memory) => void
   flyTarget: Memory | null
@@ -120,7 +121,7 @@ interface MapViewProps {
   onHoverMemory: (id: string | null) => void
 }
 
-export default function MapView({ memories, onSelectMemory, flyTarget, onBoundsChange, hoveredId, onHoverMemory }: MapViewProps) {
+export default function MapView({ isDark, memories, onSelectMemory, flyTarget, onBoundsChange, hoveredId, onHoverMemory }: MapViewProps) {
   return (
     <div className="flex-1 relative">
       <MapContainer
@@ -130,9 +131,13 @@ export default function MapView({ memories, onSelectMemory, flyTarget, onBoundsC
         zoomControl={false}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}
+          url={isDark
+            ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png'
+            : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png'}
+          subdomains="abcd"
         />
+
         <BoundsTracker onBoundsChange={onBoundsChange} />
         <FlyToTarget target={flyTarget} />
         {memories.map((memory) => (

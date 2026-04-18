@@ -1,13 +1,5 @@
 import type { MemoryType } from '../lib/memories'
-
-export const TYPE_CONFIG: Record<MemoryType | 'all', { label: string; emoji: string; bgClass: string; textClass: string }> = {
-  all:    { label: 'All',    emoji: '🗺️', bgClass: 'bg-gs-soft',   textClass: 'text-gs-muted' },
-  trail:  { label: 'Trail',  emoji: '🥾', bgClass: 'bg-gs-trail',  textClass: 'text-gs-trail-text' },
-  summit: { label: 'Summit', emoji: '⛰️', bgClass: 'bg-gs-summit', textClass: 'text-gs-summit-text' },
-  park:   { label: 'Park',   emoji: '🌳', bgClass: 'bg-gs-park',   textClass: 'text-gs-park-text' },
-  beach:  { label: 'Beach',  emoji: '🌊', bgClass: 'bg-gs-beach',  textClass: 'text-gs-beach-text' },
-  urban:  { label: 'Urban',  emoji: '🏙️', bgClass: 'bg-gs-urban',  textClass: 'text-gs-urban-text' },
-}
+import { TYPE_CONFIG } from './typeConfig'
 
 interface TypePillProps {
   type: MemoryType | 'all'
@@ -29,8 +21,8 @@ export function TypePill({ type, size, active = false, onClick }: TypePillProps)
   }
 
   // size === 'md'
-  const activeClasses = 'bg-gs-deep text-white/90 shadow-sm'
-  const inactiveClasses = 'bg-gs-soft text-gs-muted hover:bg-gs-subtle hover:text-gs-deep'
+  const activeClasses = 'bg-gs-deep dark:bg-gs-soft-dark text-white/90 dark:text-gs-ink-dark shadow-sm'
+  const inactiveClasses = 'bg-gs-soft dark:bg-gs-soft-dark text-gs-muted dark:text-gs-muted-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark hover:text-gs-deep dark:hover:text-gs-ink-dark'
 
   return (
     <button
