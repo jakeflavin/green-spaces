@@ -8,7 +8,7 @@ import { TypePill } from './TypePill'
 const TYPES: MemoryType[] = ['trail', 'summit', 'park', 'beach', 'urban']
 
 const inputClass =
-  'w-full bg-gs-soft dark:bg-gs-soft-dark border border-gs-border dark:border-gs-border-dark rounded-xl px-3.5 py-2.5 font-body text-sm text-gs-ink dark:text-gs-ink-dark placeholder:text-gs-muted/60 dark:placeholder:text-gs-muted-dark/70 focus:outline-none focus:ring-2 focus:ring-gs-deep/25 dark:focus:ring-gs-muted-dark/25 focus:border-gs-deep dark:focus:border-gs-muted-dark transition-all'
+  'w-full bg-white dark:bg-gs-soft-dark border border-gs-border dark:border-gs-border-dark rounded-xl px-3.5 py-2.5 font-body text-sm text-gs-ink dark:text-gs-ink-dark placeholder:text-gs-muted/60 dark:placeholder:text-gs-muted-dark/70 focus:outline-none focus:ring-2 focus:ring-gs-deep/25 dark:focus:ring-gs-muted-dark/25 focus:border-gs-deep dark:focus:border-gs-muted-dark transition-all'
 
 const labelClass = 'font-body font-medium text-xs text-gs-muted dark:text-gs-muted-dark block mb-1.5'
 
@@ -233,7 +233,7 @@ export default function AddMemoryPanel({ isDark, onClose, onSaved }: AddMemoryPa
         )}
 
         {/* ── Type selector ── */}
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+        <div className="grid grid-cols-3 gap-2 justify-center">
           {TYPES.map((t) => (
             <TypePill key={t} type={t} size="md" active={type === t} onClick={() => setType(t)} />
           ))}
@@ -253,7 +253,7 @@ export default function AddMemoryPanel({ isDark, onClose, onSaved }: AddMemoryPa
               <input className={inputClass} value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. Banff, Canada" />
             </label>
           </div>
-          <div>
+          <div className="min-w-0">
             <label>
               <span className={labelClass}>Date visited</span>
               <input type="date" className={inputClass} value={date} onChange={(e) => setDate(e.target.value)} />

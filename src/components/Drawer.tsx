@@ -6,7 +6,7 @@ interface DrawerProps {
 export default function Drawer({ open, children }: DrawerProps) {
   return (
     <div
-      className={`hidden md:flex flex-col flex-shrink-0 bg-gs-surface dark:bg-gs-surface-dark overflow-hidden transition-[width] duration-300 ease-out ${
+      className={`hidden md:flex flex-col flex-shrink-0 bg-gs-panel dark:bg-gs-surface-dark overflow-hidden transition-[width] duration-300 ease-out ${
         open ? 'w-80' : 'w-0'
       }`}
     >

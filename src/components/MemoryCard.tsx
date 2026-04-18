@@ -40,7 +40,7 @@ export default function MemoryCard({ memory, compact = false, onClose }: MemoryC
     : null
 
   return (
-    <div className="font-body bg-white dark:bg-gs-surface-dark relative">
+    <div className="font-body relative">
       {onClose && (
         <button
           onClick={onClose}

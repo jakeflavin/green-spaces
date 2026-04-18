@@ -9,6 +9,7 @@ export default {
           ink:     '#2a3830',
           deep:    '#4a6358',
           surface: '#ffffff',
+          panel:   '#f8faf9',
           soft:    '#f2f5f3',
           border:  '#e8ebe9',
           muted:   '#8a9890',
