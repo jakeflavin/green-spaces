@@ -4,10 +4,9 @@ import { TypePill } from './TypePill'
 interface MemoryCardProps {
   memory: Memory
   compact?: boolean
-  onClose?: () => void
 }
 
-export default function MemoryCard({ memory, compact = false, onClose }: MemoryCardProps) {
+export default function MemoryCard({ memory, compact = false }: MemoryCardProps) {
   if (compact) {
     return (
       <div className="flex gap-2 p-2.5 bg-white dark:bg-gs-surface-dark font-body w-[220px]">
@@ -39,17 +38,7 @@ export default function MemoryCard({ memory, compact = false, onClose }: MemoryC
     : null
 
   return (
-    <div className="font-body">
-      {onClose && (
-        <div className="flex items-center justify-end px-5 pt-4 pb-3 flex-shrink-0">
-          <button
-            onClick={onClose}
-            className="w-8 h-8 bg-gs-soft dark:bg-gs-soft-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer flex-shrink-0 text-sm font-body font-medium"
-            aria-label="Close"
-          >✕</button>
-        </div>
-      )}
-
+    <div className="font-body pt-4">
       {memory.imageUrl && (
         <div className="flex items-center justify-center">
           <img

@@ -90,14 +90,13 @@ export default function App() {
           onHoverMemory={handleHoverMemory}
         />
         {/* Desktop right panel — sits alongside the map, no overlay */}
-        <Drawer open={hasActivePanel}>
+        <Drawer open={hasActivePanel} onClose={handleClosePanel}>
           {selectedMemory && (
-            <MemoryCard memory={selectedMemory} onClose={handleClosePanel} />
+            <MemoryCard memory={selectedMemory} />
           )}
           {isAddingMemory && (
             <AddMemoryPanel
               isDark={isDark}
-              onClose={handleClosePanel}
               onSaved={handleClosePanel}
             />
           )}
@@ -173,12 +172,11 @@ export default function App() {
       {/* Mobile: detail / add-form bottom sheet */}
       <BottomSheet open={hasActivePanel} onClose={handleClosePanel}>
         {selectedMemory && (
-          <MemoryCard memory={selectedMemory} onClose={handleClosePanel} />
+          <MemoryCard memory={selectedMemory} />
         )}
         {isAddingMemory && (
           <AddMemoryPanel
             isDark={isDark}
-            onClose={handleClosePanel}
             onSaved={handleClosePanel}
           />
         )}

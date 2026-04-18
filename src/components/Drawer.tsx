@@ -1,9 +1,10 @@
 interface DrawerProps {
   open: boolean
+  onClose?: () => void
   children: React.ReactNode
 }
 
-export default function Drawer({ open, children }: DrawerProps) {
+export default function Drawer({ open, onClose, children }: DrawerProps) {
   return (
     <div
       className={`hidden md:flex flex-col flex-shrink-0 bg-gs-panel dark:bg-gs-surface-dark shadow-sidebar-l dark:shadow-[-4px_0_16px_rgba(0,0,0,0.40)] z-10 overflow-hidden transition-[width] duration-300 ease-out ${
@@ -14,6 +15,24 @@ export default function Drawer({ open, children }: DrawerProps) {
       <div className="w-80 flex-1 overflow-y-auto">
         {children}
       </div>
+
+      {onClose && (
+        <div className="w-80 flex-shrink-0">
+          <div className="w-[90%] mx-auto border-t border-gs-border dark:border-gs-border-dark" />
+          <div className="flex items-center px-3.5 py-3">
+            <button
+              onClick={onClose}
+              className="flex items-center gap-2 font-body text-xs text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-colors cursor-pointer group"
+              aria-label="Close panel"
+            >
+              <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-gs-soft dark:bg-gs-soft-dark group-hover:bg-gs-subtle dark:group-hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark transition-colors text-sm">
+                ✕
+              </span>
+              <span>Close</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -69,11 +69,10 @@ function formatDateForInput(d: Date): string {
 
 interface AddMemoryPanelProps {
   isDark: boolean
-  onClose: () => void
   onSaved: () => void
 }
 
-export default function AddMemoryPanel({ isDark, onClose, onSaved }: AddMemoryPanelProps) {
+export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps) {
   const [type, setType]         = useState<MemoryType>('trail')
   const [title, setTitle]       = useState('')
   const [location, setLocation] = useState('')
@@ -164,20 +163,7 @@ export default function AddMemoryPanel({ isDark, onClose, onSaved }: AddMemoryPa
 
   return (
     <>
-      {/* Header */}
-      <div className="flex items-start justify-between px-5 pt-4 pb-3 flex-shrink-0">
-        <div>
-          <h2 className="font-display font-bold text-xl text-gs-ink dark:text-gs-ink-dark leading-tight">Pin a memory</h2>
-          <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-0.5">Share a place that matters to you</p>
-        </div>
-        <button
-          onClick={onClose}
-          className="w-8 h-8 bg-gs-soft dark:bg-gs-soft-dark hover:bg-gs-subtle dark:hover:bg-gs-subtle-dark border border-gs-border dark:border-gs-border-dark rounded-full flex items-center justify-center text-gs-muted dark:text-gs-muted-dark hover:text-gs-ink dark:hover:text-gs-ink-dark transition-all cursor-pointer flex-shrink-0 text-sm font-body font-medium mt-0.5"
-          aria-label="Close"
-        >✕</button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="px-5 pb-5 space-y-4">
+      <form onSubmit={handleSubmit} className="px-5 pt-4 pb-5 space-y-4">
 
         {/* ── Step 1: Photo (mandatory) ── */}
         <div>
