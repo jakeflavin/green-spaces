@@ -11,7 +11,7 @@ export default {
           surface: '#ffffff',
           panel:   '#e8f0eb',
           soft:    '#f2f5f3',
-          border:  '#e8ebe9',
+          border:  '#c4d4c9',
           muted:   '#8a9890',
           subtle:  '#dde8e1',
           night:   '#0f1714',
