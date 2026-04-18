@@ -17,7 +17,7 @@ export type MemoryType = 'trail' | 'summit' | 'park' | 'beach' | 'urban';
 
 export interface Memory {
   id: string;
-  title: string;
+  title?: string;
   location?: string;
   lat: number;
   lng: number;
@@ -79,7 +79,6 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export interface AddMemoryInput {
-  title: string;
   location?: string;
   lat: number;
   lng: number;

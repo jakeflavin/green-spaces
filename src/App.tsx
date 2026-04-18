@@ -3,6 +3,7 @@ import { useMemories } from './hooks/useMemories'
 import { useSystemTheme } from './hooks/useSystemTheme'
 import type { Memory, MemoryType, MapBounds } from './lib/memories'
 import { TypePill } from './components/TypePill'
+import { TYPE_CONFIG } from './components/typeConfig'
 import Header from './components/Header'
 import MapView from './components/MapView'
 import type { LatLngBounds } from 'leaflet'
@@ -11,6 +12,7 @@ import BottomSheet from './components/BottomSheet'
 import Drawer from './components/Drawer'
 import MemoryCard from './components/MemoryCard'
 import AddMemoryPanel from './components/AddMemoryPanel'
+import IntroModal from './components/IntroModal'
 
 type FilterValue = 'all' | MemoryType
 
@@ -18,6 +20,7 @@ const FILTER_ORDER: FilterValue[] = ['all', 'trail', 'summit', 'park', 'beach', 
 
 export default function App() {
   const { isDark } = useSystemTheme()
+  const [showIntro, setShowIntro] = useState(() => !localStorage.getItem('gs-intro-seen'))
   const [isAddingMemory, setIsAddingMemory] = useState(false)
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
   const [activeFilter, setActiveFilter] = useState<FilterValue>('all')
@@ -64,6 +67,11 @@ export default function App() {
     setIsListOpen(false)
     setIsAddingMemory(true)
     setSelectedMemory(null)
+  }
+
+  function handleCloseIntro() {
+    localStorage.setItem('gs-intro-seen', '1')
+    setShowIntro(false)
   }
 
   function handleClosePanel() {
@@ -167,13 +175,13 @@ export default function App() {
                   memory.imageUrl ? '' : 'bg-gs-subtle dark:bg-gs-subtle-dark flex items-center justify-center text-lg'
                 }`}>
                   {memory.imageUrl
-                    ? <img src={memory.imageUrl} alt={memory.title} className="w-full h-full object-cover" />
+                    ? <img src={memory.imageUrl} alt={memory.location ?? TYPE_CONFIG[memory.type].label} className="w-full h-full object-cover" />
                     : <span>🌿</span>
                   }
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-display font-bold text-sm leading-tight truncate text-gs-ink dark:text-gs-ink-dark group-hover:text-gs-deep dark:group-hover:text-gs-ink-dark transition-colors">
-                    {memory.title}
+                    {memory.location ?? TYPE_CONFIG[memory.type].label}
                   </p>
                   {memory.location && (
                     <p className="font-body text-xs text-gs-muted dark:text-gs-muted-dark mt-0.5 truncate">📍 {memory.location}</p>
@@ -197,6 +205,8 @@ export default function App() {
           />
         )}
       </BottomSheet>
+
+      {showIntro && <IntroModal onClose={handleCloseIntro} />}
     </div>
   )
 }
