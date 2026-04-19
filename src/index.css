@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: light;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Explicit body defaults so Vite/browser resets don't interfere */
+body {
+  color: #2a3830;
+  background-color: #4a6358;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  height: 100%;
+  overflow: hidden;
+}
+
+html.dark body {
+  color: #edf3ef;
+  background-color: #0f1714;
+}
+
+/* Leaflet popup overrides */
+.memory-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(10,22,40,0.16);
+  background: #ffffff;
+  height: auto;
+  margin: 0;
+}
+.memory-popup .leaflet-popup-content { margin: 0; }
+.memory-popup .leaflet-popup-tip { background: #ffffff; }
+
+/* Center the attribution container at the bottom */
+.leaflet-bottom.leaflet-right {
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  text-align: center;
+}
+/* Optional: Remove background/padding if it looks unbalanced */
+.leaflet-control-attribution {
+  padding: 2px 5px;
+}
+
+html.dark .memory-popup .leaflet-popup-content-wrapper {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+  background: #18211d;
+}
+
+html.dark .memory-popup .leaflet-popup-tip {
+  background: #18211d;
+}
+
+/* Smooth scrollbar for sidebar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4eadc; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #4a6358; }
+
+html.dark ::-webkit-scrollbar-thumb { background: #31423a; }
+html.dark ::-webkit-scrollbar-thumb:hover { background: #9fb0a6; }
+
+/* Prevent iOS Safari from zooming in when an input is focused.
+   iOS zooms whenever the focused input's font-size is below 16px.
+   !important overrides Tailwind class specificity (class > element selector). */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Date input styling */
+input[type="date"] {
+  /* Force consistent height on iOS — appearance-none alone isn't enough */
+  min-height: 42px;
+  line-height: normal;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+
+html.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
