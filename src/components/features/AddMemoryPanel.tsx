@@ -61,6 +61,41 @@ function LocationPicker({
   )
 }
 
+async function compressImage(file: File, maxSizeMB = 4, maxDimension = 2048): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      let { width, height } = img
+      if (width > maxDimension || height > maxDimension) {
+        if (width > height) { height = Math.round((height * maxDimension) / width); width = maxDimension }
+        else { width = Math.round((width * maxDimension) / height); height = maxDimension }
+      }
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d')!.drawImage(img, 0, 0, width, height)
+
+      let quality = 0.85
+      const tryExport = () => {
+        canvas.toBlob((blob) => {
+          if (!blob) { resolve(file); return }
+          if (blob.size > maxSizeMB * 1024 * 1024 && quality > 0.3) {
+            quality -= 0.1
+            tryExport()
+          } else {
+            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }))
+          }
+        }, 'image/jpeg', quality)
+      }
+      tryExport()
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file) }
+    img.src = url
+  })
+}
+
 async function reverseGeocode(lat: number, lng: number): Promise<string | null> {
   try {
     const res = await fetch(
@@ -104,18 +139,18 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
   const [error, setError]   = useState<string | null>(null)
 
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0] ?? null
-    if (!file) return
+    const raw = e.target.files?.[0] ?? null
+    if (!raw) return
 
-    setImageFile(file)
-    setPreview(URL.createObjectURL(file))
     setLat(null)
     setLng(null)
     setLocationSource(null)
     setExtracting(true)
 
+    // Parse EXIF from original before compression strips it
+    let parsed: Awaited<ReturnType<typeof exifr.parse>> = null
     try {
-      const parsed = await exifr.parse(file, {
+      parsed = await exifr.parse(raw, {
         gps: true,
         pick: ['DateTimeOriginal', 'GPSLatitude', 'GPSLongitude', 'GPSLatitudeRef', 'GPSLongitudeRef'],
       })
@@ -137,6 +172,10 @@ export default function AddMemoryPanel({ isDark, onSaved }: AddMemoryPanelProps)
     } finally {
       setExtracting(false)
     }
+
+    const file = await compressImage(raw)
+    setImageFile(file)
+    setPreview(URL.createObjectURL(file))
   }
 
   async function handlePinPlaced(la: number, lo: number) {
